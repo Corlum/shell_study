@@ -46,18 +46,18 @@ shell通过环境变量确定登录的用户名、PATH路径、文件系统等�
 
 **检查系统环境变量的命令**
 
-- set，输出所有变量，包括全局变量、局部变量
-- env，只显示全局变量
-- declare，输出所有的变量，如同set
-- export，显示和设置环境变量值
+- `set`，输出所有变量，包括全局变量、局部变量
+- `env`，只显示全局变量
+- `declare`，输出所有的变量，如同set
+- `export`，显示和设置环境变量值
 
 **撤销环境変量**
 
-- unset 变量名，删除变量或函数。
+- `unset 变量名`，删除变量或函数。
 
 **设置只读变量**
 
-- readonly，只有shell结束，只读变量失效
+- `readonly`，只有shell结束，只读变量失效
 
 **环境变量初始化及加载顺序：**
 
@@ -67,7 +67,7 @@ shell通过环境变量确定登录的用户名、PATH路径、文件系统等�
 4. 运行`$HOME/.bashrc`
 5. 运行`/etc/bashrc`
 
-### 特殊变量
+## 特殊变量
 
 shell的特殊变量，用在如脚本，函数传递参数使用，有如下特殊的，位置参数变量
 
@@ -82,8 +82,7 @@ $@	不加引号，效果同上，加引号，是接收所有参数为独立字�
 ### 特殊状态变量
 
 ```bash
-
-$?	上一次命令执行状态返回值，o正确，非9失败
+$?	上一次命令执行状态返回值，0正确，非0失败
 $$	当前shell脚本的进程号
 $!	上一次后台进程的PID
 $_	再次之前执行的命令，最后一个参数
@@ -92,3 +91,80 @@ $_	再次之前执行的命令，最后一个参数
 	搜索Special Parameters
 ```
 
+内置shell命令：
+
+echo
+
+> -n 不换行输出
+>
+> -e 解析字符串中的特殊符号
+>
+> \n 换行
+>
+> \t 制表符
+>
+> \r 回车
+>
+> \b 退格
+
+eval
+
+> 多命令执行，命令与命令之间用`;`隔开
+
+exec
+
+> 不创建子进程来执行命令，在命令执行完后，自动执行exit（会导致命令执行完后退出当前shell）
+
+export
+
+read
+
+shift
+
+
+
+## shell子串
+
+```bash
+`${变量}`	#返回变量值
+`${#变量}`	#返回变量长度，字符长度
+`${变量:n}`	#返回变量第n+1之后的字符（从0开始）
+`${变量:start:length}`	#提取start之后的length限制的字符
+`${变量#word}`	#从变量开头删除最短匹配的word子串
+`${变量##word}`	#从变量开头，删除最长匹配的word
+`${变量%word}`	#从变量结尾删除最短的word
+`${变量%%word}`	#从变量结尾开始删除最长匹配的word（注意，这是反着匹配的，是先匹配你提供的结尾串，最后匹配你提供的开头串）
+`${变量/pattern/string}`	#用string代替第一个匹配的pattern
+`${变量//pattern/string}`	#用string代替所有的pattern
+```
+
+
+
+## 特殊shell扩展变量
+
+```bash
+#如果parameter变量值为空，返回word字符串（并不会赋值给parameter）
+${parameter:-word}
+#如果parameter变量为空，则word替代变量值，且返回其值
+${parameter:=word}
+#如果parameter变量为空，word当作stderr输出，否则输出变量值用于设置变量为空导致错误时，返回的错误信息
+${parameter:?word}
+#如果parameter变量为空，什么都不做，否则word返回
+${parameter:+word}
+```
+
+
+
+# shell脚本开发
+
+## 数值计算
+
+![image-20260622153426716](C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\image-20260622153426716.png)
+
+### 双小括号
+
+![image-20260622153602141](C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\image-20260622153602141.png)
+
+> tips:
+>
+> []里需要两个空格，=和这些运算符也需要空格，所以，最好经常性的加点空格，预防奇奇怪怪的报错
